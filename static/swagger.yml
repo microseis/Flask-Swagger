@@ -1,0 +1,87 @@
+openapi: 3.0.0
+info:
+  title: Drinks
+  version: 1.0.0
+servers:
+  - url: http://127.0.0.1:5000/
+    description: Dev server
+paths:
+  /drinks:
+    get:
+      summary: Метод получения списка напитков
+      tags:
+        - Drinks
+      operationId: getAllDrinks
+      responses:
+        '200':
+          description: Sucess
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Drinks"
+        'default':
+          description: Все ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
+  /drinks/{drink_id}:
+    get:
+      summary: Метод получения выбранного напитка
+      tags:
+        - Drinks
+      operationId: getDrinkById
+      parameters:
+        - name: drink_id
+          in: path
+          required: true
+          description: Идентификатор напитка
+          schema:
+            type: string
+          example: 1
+      responses:
+        '200':
+          description: Sucess
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Drinks"
+        'default':
+          description: Все ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+components:
+  schemas:
+    Drink:
+      type: object
+      required:
+        - description
+        - id
+        - name
+      properties:
+        id:
+          type: integer
+          example: 1
+        description:
+          type: string
+          example: Description
+        name:
+          type: string
+          example: Vodka
+    Drinks:
+      type: array
+      items:
+      $ref: '#/components/schemas/Drink'
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+        message:
+          type: string
