@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: Drinks
+  title: Drinks API
   version: 1.0.0
 servers:
   - url: http://127.0.0.1:5000/
@@ -25,7 +25,30 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
-
+    post:
+      summary: Метод создания напитка
+      tags:
+        - Drinks
+      operationId: createDrink
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Drink'
+      responses:
+        '200':
+          description: Sucess
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Drink"
+        'default':
+          description: Все ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
   /drinks/{drink_id}:
     get:
       summary: Метод получения выбранного напитка
@@ -53,18 +76,41 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/Error"
+    delete:
+      summary: Метод удаления выбранного напитка
+      tags:
+        - Drinks
+      operationId: deleteDrinkById
+      parameters:
+        - name: drink_id
+          in: path
+          required: true
+          description: Идентификатор напитка
+          schema:
+            type: string
+          example: 1
+      responses:
+        '200':
+          description: Sucess
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Drinks"
+        'default':
+          description: Все ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Error"
+
 components:
   schemas:
     Drink:
       type: object
       required:
         - description
-        - id
         - name
       properties:
-        id:
-          type: integer
-          example: 1
         description:
           type: string
           example: Description
